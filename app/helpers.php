@@ -50,3 +50,40 @@ function model_plural_name($model)
     // 获取子串的复数形式，例如：传参 `user` 会得到 `users`
     return Str::plural($snake_case_name);
 }
+
+function send_sms($mobile){
+    $key=config('my.sms.ali_access_key_id');
+    $secret=config('my.sms.ali_access_key_secret');
+    $sign_name =config('my.sms.sign_name');
+    $template = config('my.sms.template');
+    $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+    $content_arr=['code'=>$code];
+    if (env('APP_DEBUG')){
+        return array('success' => 1, 'code' => '1234');
+    }
+    \AlibabaCloud\Client\AlibabaCloud::accessKeyClient($key, $secret)
+        ->regionId('cn-hangzhou')// replace regionId as you need
+        ->asGlobalClient();
+    $option = array(
+        'query' => array(
+            'PhoneNumbers' => $mobile,
+            'SignName' => $sign_name,
+            'TemplateCode' => $template,
+            'TemplateParam' => json_encode($content_arr),
+        ),
+    );
+    try {
+        $result = \AlibabaCloud\Client\AlibabaCloud::rpcRequest()
+            ->product('Dysmsapi')
+            // ->scheme('https') // https | http
+            ->version('2017-05-25')
+            ->action('SendSms')
+            ->method('POST')
+            ->options($option)
+            ->request();
+        $rs = $result->toArray();
+        return array('success' => 1, 'code' => $rs['Code']);
+    } catch (\AlibabaCloud\Client\Exception\ClientException $e) {
+        return array('success' => 0, 'msg' => 'client-error:' . $e->getErrorMessage());
+    }
+}
