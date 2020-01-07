@@ -12,7 +12,7 @@ namespace App\Http\Service\Api;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-class VerificationService
+class VerificationService extends BaseService
 {
     public function store($request)
     {

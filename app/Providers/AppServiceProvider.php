@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Validate\Mobile;
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
 		\App\Models\Topic::observe(\App\Observers\TopicObserver::class);
         \App\Models\Link::observe(\App\Observers\LinkObserver::class);
         Resource::withoutWrapping();
+        Validator::extend('mobile',Mobile::class.'@validate');
     }
 }

@@ -14,8 +14,13 @@ use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Cache;
 
-class UserService
+class UserService extends BaseService
 {
+    /**
+     * @param $request
+     * @return UserResource
+     * @throws AuthenticationException
+     */
     public function store($request)
     {
         $verifyData = Cache::get($request->verification_key);
