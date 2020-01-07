@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\AuthorizationRequest;
 use App\Http\Requests\Api\SocialAuthorizationRequest;
 use App\Http\Service\Api\AuthorizationService;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorizationsController extends BaseController
 {
@@ -36,5 +37,17 @@ class AuthorizationsController extends BaseController
     public function store(AuthorizationRequest $request)
     {
         return $this->service->store($request);
+    }
+
+    public function update()
+    {
+        $token=Auth::guard('api')->refresh();
+        return $this->respondWithToken($token);
+    }
+
+    public function destroy()
+    {
+        auth('api')->logout();
+        return response(null, 204);
     }
 }

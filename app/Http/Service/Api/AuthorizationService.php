@@ -17,11 +17,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthorizationService extends BaseService
 {
-    //第三方登录
     /**
      * @param $request
      * @return \Illuminate\Http\JsonResponse
      * @throws AuthenticationException
+     * @description 第三方登录
      */
     public function SocialStore($request)
     {
@@ -57,12 +57,12 @@ class AuthorizationService extends BaseService
         return $this->respondWithToken($token)->setStatusCode(201);
     }
 
-    //token登录
 
     /**
      * @param $request
      * @return \Illuminate\Http\JsonResponse
      * @throws AuthenticationException
+     * @description 账号密码登录
      */
     public function store($request)
     {

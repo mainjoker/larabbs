@@ -21,6 +21,9 @@ Route::prefix('v1')->namespace('Api')->name('api.v1.')->group(function (){
     Route::post('socials/{social_type}/authorizations','AuthorizationsController@SocialStore')->where('social_type','weixin')->name('socials.authorizations.store');
     Route::get('socials/{social_type}/code','AuthorizationsController@getCode')->where('social_type','weixin')->name('socials.authorizations.code');
     Route::post('authorizations','AuthorizationsController@store')->name('authorizations.store');
+    //刷新token
+    Route::put('authorizations/current','AuthorizationsController@update')->name('authorizations.update');
+    Route::delete('authorizations/current','AuthorizationsController@destroy')->name('authorizations.destroy');//删除token
 
 
 });
