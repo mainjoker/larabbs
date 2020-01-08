@@ -28,6 +28,10 @@ Route::prefix('v1')->namespace('Api')->name('api.v1.')->group(function (){
     //登录后可访问的接口
     Route::middleware('auth:api')->group(function (){
         Route::get('user','UserController@me')->name('user.show');
+        //上传图片
+        Route::post('images','ImagesController@store')->name('images.store');
+        //编辑用户资料
+        Route::Patch('user','UserController@update')->name('user.update');
     });
 
 

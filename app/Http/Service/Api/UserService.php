@@ -10,6 +10,7 @@ namespace App\Http\Service\Api;
 
 
 use App\Http\Resources\UserResource;
+use App\Models\Images;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Cache;
@@ -42,5 +43,22 @@ class UserService extends BaseService
         Cache::forget($request->verification_key);
 
         return new UserResource($user);
+    }
+
+    public function update($request)
+    {
+        $user = $request->user();
+
+        $attributes = $request->only(['name', 'email', 'introduction']);
+
+        if ($request->avatar_image_id) {
+            $image = Images::find($request->avatar_image_id);
+
+            $attributes['avatar'] = $image->path;
+        }
+//        dd($attributes);
+        $user->update($attributes);
+
+        return (new UserResource($user))->showSensitiveFields();
     }
 }

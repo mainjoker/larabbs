@@ -34,4 +34,9 @@ class UserController extends BaseController
     {
         return (new UserResource($request->user()))->showSensitiveFields();
     }
+
+    public function update(UserRequest $request)
+    {
+        return $this->service->update($request);
+    }
 }
