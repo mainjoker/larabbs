@@ -24,6 +24,11 @@ Route::prefix('v1')->namespace('Api')->name('api.v1.')->group(function (){
     //刷新token
     Route::put('authorizations/current','AuthorizationsController@update')->name('authorizations.update');
     Route::delete('authorizations/current','AuthorizationsController@destroy')->name('authorizations.destroy');//删除token
+    Route::get('users/{user}','UserController@show')->name('users.show');
+    //登录后可访问的接口
+    Route::middleware('auth:api')->group(function (){
+        Route::get('user','UserController@me')->name('user.show');
+    });
 
 
 });

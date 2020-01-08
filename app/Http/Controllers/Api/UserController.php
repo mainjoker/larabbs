@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\UserRequest;
+use App\Http\Requests\Request;
+use App\Http\Resources\UserResource;
 use App\Http\Service\Api\UserService;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\JWTGuard;
 
 class UserController extends BaseController
 {
@@ -23,5 +23,15 @@ class UserController extends BaseController
     public function store(UserRequest $request)
     {
        return $this->service->store($request);
+    }
+
+    public function show(User $user,\Illuminate\Http\Request $request)
+    {
+        return (new UserResource($user))->showSensitiveFields();
+    }
+
+    public function me(\Illuminate\Http\Request $request)
+    {
+        return (new UserResource($request->user()))->showSensitiveFields();
     }
 }
